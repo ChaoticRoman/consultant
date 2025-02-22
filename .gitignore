@@ -1,2 +1,5 @@
 .port
 .verify_token
+.token
+.app_secret
+__pycache__
