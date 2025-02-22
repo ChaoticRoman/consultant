@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 import uvicorn
 
 from models import WebhookBody
+from handler import handle
 
 app = FastAPI()
 
@@ -24,7 +25,7 @@ def dump(data):
         return json.dumps(data, indent=4)
 
 
-@app.middleware("http")
+#@app.middleware("http")
 async def log_requests(request: Request, call_next):
     """
     Middleware to log details of every incoming request.
@@ -68,21 +69,15 @@ async def auth_requests(request: Request, call_next):
 
 
 @app.get("/webhook")
-def webhook(hub_challenge: Annotated[int |None, Query(alias="hub.challenge")]):
+def webhook_get(hub_challenge: Annotated[int |None, Query(alias="hub.challenge")]):
     if hub_challenge:
         return hub_challenge
 
 
 @app.post("/webhook")
-def submit_data(data: WebhookBody):
-    #print("DATA", dump(data))
-    print("SENDER", data.sender())
-    print("TEXT", data.text())
+def webhook_post(data: WebhookBody):
+    handle(data.sender(), data.text())
 
-
-@app.put("/webhook")
-def update_data(data: dict):
-    pass
 
 if __name__ == "__main__":
     abspath = os.path.abspath(__file__)
