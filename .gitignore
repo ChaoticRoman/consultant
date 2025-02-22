@@ -2,4 +2,6 @@
 .verify_token
 .token
 .app_secret
+.openai_key
+
 __pycache__
