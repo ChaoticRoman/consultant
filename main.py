@@ -14,7 +14,10 @@ from handler import handle
 
 app = FastAPI()
 
-with open(".app_secret") as f:
+abspath = os.path.abspath(__file__)
+script_dir = os.path.dirname(abspath)
+
+with open(os.path.join(script_dir, ".app_secret")) as f:
     app_secret = f.read().strip()
 
 
@@ -80,7 +83,4 @@ def webhook_post(data: WebhookBody):
 
 
 if __name__ == "__main__":
-    abspath = os.path.abspath(__file__)
-    os.chdir(os.path.dirname(abspath))
-
     uvicorn.run(app, uds="uvicorn.sock")

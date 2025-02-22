@@ -2,7 +2,10 @@ import os
 
 import openai
 
-with open(".openai_key", "r") as f:
+abspath = os.path.abspath(__file__)
+script_dir = os.path.dirname(abspath)
+
+with open(os.path.join(script_dir, ".openai_key")) as f:
     os.environ["OPENAI_API_KEY"] = f.read().strip()
 
 client = openai.OpenAI()

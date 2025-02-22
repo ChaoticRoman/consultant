@@ -4,4 +4,6 @@
 .app_secret
 .openai_key
 
+data
+
 __pycache__
