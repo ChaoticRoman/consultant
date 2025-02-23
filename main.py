@@ -17,7 +17,12 @@ app = FastAPI()
 abspath = os.path.abspath(__file__)
 script_dir = os.path.dirname(abspath)
 
-with open(os.path.join(script_dir, ".app_secret")) as f:
+
+def full_path(fn):
+    return os.path.join(script_dir, fn)
+
+
+with open(full_path(".app_secret")) as f:
     app_secret = f.read().strip()
 
 
@@ -83,4 +88,4 @@ def webhook_post(data: WebhookBody):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, uds="uvicorn.sock")
+    uvicorn.run(app, uds=full_path("uvicorn.sock"))
