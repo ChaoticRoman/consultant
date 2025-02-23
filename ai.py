@@ -30,14 +30,16 @@ def chat(prompt, history=None, model="o3-mini"):
     message = response.choices[0].message
     content = message.content.strip()
 
+    messages.append({"role": "assistant", "content": content})
+
     if DEBUG_LOG:
         log("Got from OpenAI:", content)
 
-    return content
+    return content, messages
 
 
 def system_prompt(content):
-    return [{"role": "system", "content": content}]
+    return {"role": "system", "content": content}
 
 
 def log(*args):
@@ -50,3 +52,4 @@ def log(*args):
 
 if __name__ == "__main__":
     print(f"{chat('Tell a joke.')=}")
+    print(f"{chat('Tell a joke.', [system_prompt('You are grim storyteller.')])=}")

@@ -1,5 +1,7 @@
+import os
 import shutil
 import subprocess
+import json
 
 from send import send
 from ai import chat, system_prompt
@@ -25,25 +27,44 @@ def handle_admin(contact, message):
     elif message.startswith("/user"):
         handle_user(contact, message.removeprefix('/user'))
     else:
-        send(contact, chat(message))
+        send(contact, chat(message)[0])
 
 
 def handle_user(contact, message):
-    history = build_system_prompt(contact)  # + TODO previous messages as well
-    send(contact, chat(message, history=history))
-    # TODO save converstation etc.
+    history = build_history(contact)
+    response, messages = chat(message, history=history)
+    send(contact, response)
+    save_user_data(contact, messages)
 
 
-def build_system_prompt(contact):  # TODO Going to be personalized
-    return system_prompt(
-        "You are over-the-top tough, saracastic, ironic but helpful and motivating assistant."
-    )
+def save_user_data(contact, messages):  # TODO summarization
+    with open(contact_file(contact), "w") as f:
+        json.dump(messages, f, indent=2)
+
+
+def build_history(contact):
+    path = contact_file(contact)
+    if os.path.isfile(path):
+        with open(path) as f:
+            history = json.load(f)
+    else:
+        with open(full_path("../consultant-users/nvc.txt")) as f:
+            history = [system_prompt(f.read())]
+    return history
+
+
+def contact_file(contact):
+    return full_path(f"../consultant-users/{contact}.json")
 
 
 def status():
-        total, used, free = shutil.disk_usage("/")
+    total, used, free = shutil.disk_usage("/")
+    data_size = folder_size(full_path("data"))
+    user_size = folder_size(full_path("../consultant-users"))
 
-        data_size = subprocess.check_output(
-            ['du','-sh', full_path("data")]).split()[0].decode('utf-8')
+    return f"UP\n{free // (2**30)} GiB free\ndata {data_size}\nconsultant-users {user_size}"
 
-        return f"UP, {free // (2**30)} GiB free, data/ size {data_size}"
+
+def folder_size(folder):
+    return subprocess.check_output(
+        ['du','-sh', folder]).split()[0].decode('utf-8')
