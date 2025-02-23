@@ -1,11 +1,16 @@
 import os
+import datetime
 
 import openai
+
+from utils import full_path
+
+DEBUG_LOG = True
 
 abspath = os.path.abspath(__file__)
 script_dir = os.path.dirname(abspath)
 
-with open(os.path.join(script_dir, ".openai_key")) as f:
+with open(full_path(".openai_key")) as f:
     os.environ["OPENAI_API_KEY"] = f.read().strip()
 
 client = openai.OpenAI()
@@ -15,6 +20,9 @@ def chat(prompt, history=None, model="o3-mini"):
     messages = history if history else []
     messages.append({"role": "user", "content": prompt})
 
+    if DEBUG_LOG:
+        log("Sending to OpenAI:", messages)
+
     response = client.chat.completions.create(
         model=model, messages=messages
     )
@@ -22,7 +30,22 @@ def chat(prompt, history=None, model="o3-mini"):
     message = response.choices[0].message
     content = message.content.strip()
 
+    if DEBUG_LOG:
+        log("Got from OpenAI:", content)
+
     return content
+
+
+def system_prompt(content):
+    return [{"role": "system", "content": content}]
+
+
+def log(*args):
+    with open(full_path("data/ai.log"), "a") as f:
+        f.write(
+            str(datetime.datetime.now()) + " "
+            + " ".join(str(a) for a in args) + "\n"
+        )
 
 
 if __name__ == "__main__":

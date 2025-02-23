@@ -11,16 +11,9 @@ import uvicorn
 
 from models import WebhookBody
 from handler import handle
+from utils import full_path
 
 app = FastAPI()
-
-abspath = os.path.abspath(__file__)
-script_dir = os.path.dirname(abspath)
-
-
-def full_path(fn):
-    return os.path.join(script_dir, fn)
-
 
 with open(full_path(".app_secret")) as f:
     app_secret = f.read().strip()

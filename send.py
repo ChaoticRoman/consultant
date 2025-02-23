@@ -2,12 +2,11 @@ import os
 
 import requests
 
+from utils import full_path
+
 URL = "https://graph.facebook.com/v21.0/566964093168050/messages"
 
-abspath = os.path.abspath(__file__)
-script_dir = os.path.dirname(abspath)
-
-with open(os.path.join(script_dir, ".token")) as f:
+with open(full_path(".token")) as f:
     token = f.read().strip()
 
 headers = {
