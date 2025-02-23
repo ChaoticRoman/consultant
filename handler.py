@@ -25,7 +25,7 @@ def handle_admin(contact, message):
     if message in ("/status", "/s"):
         send(contact, status())
     elif message.startswith("/user"):
-        handle_user(contact, message.removeprefix('/user'))
+        handle_user(contact, message.removeprefix('/user').strip())
     else:
         send(contact, chat(message)[0])
 

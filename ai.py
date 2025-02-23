@@ -18,7 +18,7 @@ client = openai.OpenAI()
 
 def chat(prompt, history=None, model="o3-mini"):
     messages = history if history else []
-    messages.append({"role": "user", "content": prompt})
+    messages.append({"role": "user", "content": prompt.strip()})
 
     if DEBUG_LOG:
         log("Sending to OpenAI:", messages)
