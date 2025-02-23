@@ -5,7 +5,7 @@
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install supervisor python3-pip nginx certbot python3-certbot-nginx
+sudo apt install supervisor python3-pip nginx certbot python3-certbot-nginx logrotate
 sudo pip install --break-system-packages openai "fastapi[standard]"
 ```
 
@@ -32,6 +32,12 @@ sudo nano /etc/nginx/sites-available/default
 sudo ln -s `pwd`/supervisor.conf /etc/supervisor/conf.d/consultant.conf
 sudo systemctl enable supervisor
 sudo systemctl start supervisor
+```
+
+### Logrotate
+
+```
+sudo ln -s `pwd`/logrotate.conf /etc/logrotate.d/consultant
 ```
 
 ## Resources
