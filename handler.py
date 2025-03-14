@@ -27,12 +27,12 @@ def handle_admin(contact, message):
     elif message.startswith("/user"):
         handle_user(contact, message.removeprefix('/user').strip())
     else:
-        send(contact, chat(message)[0])
+        send(contact, chat(message.strip())[0])
 
 
 def handle_user(contact, message):
     history = build_history(contact)
-    response, messages = chat(message, history=history)
+    response, messages, cost = chat(message, history=history)
     send(contact, response)
     save_user_data(contact, messages)
 

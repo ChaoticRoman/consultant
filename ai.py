@@ -15,6 +15,9 @@ with open(full_path(".openai_key")) as f:
 
 client = openai.OpenAI()
 
+USD_PER_INPUT_TOKEN = {"o1": 15e-6, "o3-mini": 1.1e-6}
+USD_PER_OUTPUT_TOKEN = {"o1": 60e-6, "o3-mini": 4.4e-6}
+
 
 def chat(prompt, history=None, model="o3-mini"):
     messages = history if history else []
@@ -35,7 +38,16 @@ def chat(prompt, history=None, model="o3-mini"):
     if DEBUG_LOG:
         log("Got from OpenAI:", content)
 
-    return content, messages
+    usage = response.usage
+    prompt_tokens, completion_tokens = (
+        usage.prompt_tokens,
+        usage.completion_tokens
+    )
+
+    price = USD_PER_INPUT_TOKEN[model] * prompt_tokens
+    price += USD_PER_OUTPUT_TOKEN[model] * completion_tokens
+
+    return content, messages, price
 
 
 def system_prompt(content):
@@ -51,5 +63,6 @@ def log(*args):
 
 
 if __name__ == "__main__":
+#    print(f"{chat('Tell me all you know about Chineese Triad organization.')=}")
     print(f"{chat('Tell a joke.')=}")
-    print(f"{chat('Tell a joke.', [system_prompt('You are grim storyteller.')])=}")
+#    print(f"{chat('Tell a joke.', [system_prompt('You are grim storyteller.')])=}")
