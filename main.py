@@ -11,7 +11,7 @@ import uvicorn
 
 from models import WebhookBody
 from handler import handle, status
-from utils import full_path
+from utils import full_path, now2str
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -35,6 +35,7 @@ async def log_requests(request: Request, call_next):
     body = await request.body()
 
     print("--------------------------------------------------")
+    print(f"UTC: {now2str()}")
     print(f"Path: {request.url.path}")
     print(f"Method: {request.method}")
     print(f"Query Params: {request.query_params}")
@@ -78,7 +79,10 @@ def webhook_get(hub_challenge: Annotated[int |None, Query(alias="hub.challenge")
 
 @app.post("/webhook")
 def webhook_post(data: WebhookBody):
-    handle(data.sender(), data.text())
+    if data.is_message():  # Handle incoming message
+        handle(data.sender(), data.text())
+    else:  # We are not handling sent, delivered, and read now
+        return None
 
 
 @app.get("/")

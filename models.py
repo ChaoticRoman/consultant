@@ -31,8 +31,8 @@ class MetadataModel(BaseModel):
 class ValueModel(BaseModel):
     messaging_product: str
     metadata: MetadataModel
-    contacts: List[ContactModel]
-    messages: List[MessageModel]
+    contacts: List[ContactModel] | None = None
+    messages: List[MessageModel] | None = None
 
 
 class ChangeModel(BaseModel):
@@ -48,6 +48,9 @@ class EntryModel(BaseModel):
 class WebhookBody(BaseModel):
     object: str
     entry: List[EntryModel]
+
+    def is_message(self):
+        return self.entry[0].changes[0].value.messages is not None
 
     def message(self):
         return self.entry[0].changes[0].value.messages[0]
