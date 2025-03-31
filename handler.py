@@ -5,7 +5,7 @@ import json
 
 from send import send
 from ai import chat, system_prompt
-from utils import full_path
+from utils import full_path, now2str
 
 ROMAN = "420736452265"
 users = []
@@ -34,12 +34,14 @@ def handle_user(contact, message):
     history = build_history(contact)
     response, messages, cost = chat(message, history=history)
     send(contact, response)
-    save_user_data(contact, messages)
+    save_user_data(contact, messages, cost)
 
 
-def save_user_data(contact, messages):  # TODO summarization
+def save_user_data(contact, messages, price):  # TODO summarization
     with open(contact_file(contact), "w") as f:
         json.dump(messages, f, indent=2)
+    with open(contact_file(contact, cost=True), "a") as f:
+        f.write(f"{now2str()} {price}\n")
 
 
 def build_history(contact):
@@ -53,8 +55,8 @@ def build_history(contact):
     return history
 
 
-def contact_file(contact):
-    return full_path(f"../consultant-users/{contact}.json")
+def contact_file(contact, cost=False):
+    return full_path(f"../consultant-users/{contact}{'-cost.txt' if cost else '.json'}")
 
 
 def status():
