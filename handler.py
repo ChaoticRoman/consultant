@@ -6,10 +6,13 @@ import json
 from send import send
 from ai import chat, system_prompt
 from utils import full_path, now2str
+from cost import sum_recent_costs
 
 ROMAN = "420736452265"
 users = []
 
+DAYS = 30
+LIMIT = 2.0
 
 # TODO make async (make send, handle_* and chat async first)
 def handle(contact, message):
@@ -31,6 +34,12 @@ def handle_admin(contact, message):
 
 
 def handle_user(contact, message):
+    cost = sum_recent_costs(contact_file(contact, cost=True), DAYS)
+
+    if cost > LIMIT:
+        send(contact, "Promiň, ale překročil jsi limit.")
+        return
+
     history = build_history(contact)
     response, messages, cost = chat(message, history=history)
     send(contact, response)
