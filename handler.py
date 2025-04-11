@@ -9,7 +9,7 @@ from utils import full_path, now2str
 from cost import sum_recent_costs
 
 ROMAN = "420736452265"
-users = []
+users = ["420739233949"]
 
 DAYS = 30
 LIMIT = 2.0

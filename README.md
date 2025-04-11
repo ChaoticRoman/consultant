@@ -40,6 +40,10 @@ sudo systemctl start supervisor
 sudo ln -s `pwd`/logrotate.conf /etc/logrotate.d/consultant
 ```
 
+### Meta WhatsApp
+
+* We need long-lived System User Access Tokens
+
 ## Resources
 
 * https://github.com/daveebbelaar/python-whatsapp-bot
@@ -49,3 +53,4 @@ sudo ln -s `pwd`/logrotate.conf /etc/logrotate.d/consultant
 * https://stackoverflow.com/questions/75422064/validate-x-hub-signature-256-meta-whatsapp-webhook-request
 * https://stackoverflow.com/a/75469968/12118546
 * https://fastapi.tiangolo.com/tutorial/query-params-str-validations/?h=alias#alias-parameters
+* https://developers.facebook.com/docs/whatsapp/business-management-api/get-started#system-user-access-tokens

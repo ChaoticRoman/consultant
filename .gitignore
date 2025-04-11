@@ -1,6 +1,6 @@
 .port
 .verify_token
-.token
+.*token*
 .app_secret
 .openai_key
 

@@ -8,7 +8,7 @@ from smartsplit import split_text_into_chunks
 
 URL = "https://graph.facebook.com/v21.0/566964093168050/messages"
 
-with open(full_path(".token")) as f:
+with open(full_path(".access_token")) as f:
     token = f.read().strip()
 
 headers = {
@@ -43,4 +43,5 @@ def send_single(number="420736452265", message="Hello, user!", debug=False):
 
 
 if __name__ == "__main__":
+#    send(number="420739233949", debug=True)
     send(debug=True)
