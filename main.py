@@ -12,6 +12,7 @@ import uvicorn
 from models import WebhookBody
 from handler import handle, status
 from utils import full_path, now2str
+from send import confirm_read
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -80,6 +81,7 @@ def webhook_get(hub_challenge: Annotated[int |None, Query(alias="hub.challenge")
 @app.post("/webhook")
 def webhook_post(data: WebhookBody):
     if data.is_message():  # Handle incoming message
+        confirm_read(data.message_id())
         handle(data.sender(), data.text())
     else:  # We are not handling sent, delivered, and read now
         return None

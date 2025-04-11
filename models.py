@@ -60,3 +60,6 @@ class WebhookBody(BaseModel):
 
     def text(self):
         return self.message().text.body
+
+    def message_id(self):
+        return self.message().id

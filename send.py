@@ -42,6 +42,23 @@ def send_single(number="420736452265", message="Hello, user!", debug=False):
         print("Response body:", response.text)
 
 
+def confirm_read(message_id, typing=True, debug=False):
+    payload = {
+        "messaging_product": "whatsapp",
+        "status": "read",
+        "message_id": message_id,
+    }
+    if typing:
+        payload["typing_indicator"] = {
+            "type": "text"
+        }
+    response = requests.post(URL, headers=headers, json=payload)
+
+    if debug or not response.ok:
+        print("Status code:", response.status_code)
+        print("Response body:", response.text)
+
+
 if __name__ == "__main__":
 #    send(number="420739233949", debug=True)
     send(debug=True)
