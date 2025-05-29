@@ -54,3 +54,9 @@ sudo ln -s `pwd`/logrotate.conf /etc/logrotate.d/consultant
 * https://stackoverflow.com/a/75469968/12118546
 * https://fastapi.tiangolo.com/tutorial/query-params-str-validations/?h=alias#alias-parameters
 * https://developers.facebook.com/docs/whatsapp/business-management-api/get-started#system-user-access-tokens
+
+## Talk about this
+
+I have talked about this project on [May 2025 Brno Pyvo](https://pyvo.cz/brno-pyvo/2025-05/). 
+
+[Google slides are available here.](https://docs.google.com/presentation/d/1s9HdK1kzuwCxpKui1C0Bo6DW5CpoPMqhAakbWvJIWdg/)
