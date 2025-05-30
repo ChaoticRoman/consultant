@@ -1,5 +1,7 @@
 # WhatsApp Bot with OpenAI integration
 
+The process was tested on Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-1026-oracle x86_64).
+
 ## Dependencies
 
 ```
